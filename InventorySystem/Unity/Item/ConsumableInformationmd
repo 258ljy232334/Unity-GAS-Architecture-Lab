@@ -1,0 +1,17 @@
+```
+namespace Item.Information
+{
+    [System.Serializable]
+    public class ConsumableInformation : ItemInformation
+    {
+        public ConsumableStrategySO Strategy;   //使用效果
+    }
+}
+namespace Consumable.Strategy
+{
+    public abstract class ConsumableStrategySO : ScriptableObject
+    {
+        public abstract UseResult Consume(ItemInstance instance, UseContext context);  
+    }
+}
+```
