@@ -11,14 +11,12 @@ Lyra 强制将输入拆分为两条平行链路，这种设计在解耦的同时
 ### A. Native Actions (硬编码链路)
 * **流程**: `IA` -> `UHeroComponent` -> `C++ Member Function`。
 * **主要用途**: 基础移动（Move）、视角（Look）。
-* **严厉锐评**: 
     * **逻辑断层**: Native Action 绕过了 GAS 系统。如果你想在某个状态下（如“定身”）屏蔽移动，你必须在 C++ 函数里手动判断 Tag，或者修改 IMC 的优先级。
     * **热更死角**: 对于使用 **HybridCLR** 的项目，Native Actions 极其难以被热更层拦截或重写，属于“架构硬块”。
 
 ### B. Ability Actions (Tag 驱动链路)
 * **流程**: `IA` -> `InputTag` -> `ASC` -> `ActivateAbilityByTag`。
 * **主要用途**: 所有的战斗技能、交互逻辑。
-* **严厉锐评**:
     * **性能抖动**: 每次按键都会触发一次映射表查找。虽然单次开销极小，但在高频战斗中（如 ACT 或帧同步逻辑），这种基于字符串/Tag 的动态匹配比直接函数回调慢了一个量级。
     * **调试地狱**: 当按键没反应时，你需要检查：`IMC` 是否激活 -> `IA` 是否填入 `InputConfig` -> `InputTag` 是否匹配 -> `AbilitySet` 是否授予 -> `GA` 的 `ActivationTag` 是否正确。链路过长导致排查成本极高。
 
@@ -63,9 +61,6 @@ Lyra 强制将输入拆分为两条平行链路，这种设计在解耦的同时
 ### 缺陷 02: IMC 的优先级战争
 * **现象**: Lyra 通过 `GameFeatureAction` 注入 `IMC`。
 * **风险**: 如果多个插件同时注入 IMC 且优先级相同，按键响应顺序将变得不可控。
-* **严厉结论**: 必须在 SOP 中强制规定 `Priority` 步长（如：基础插件 10，玩法插件 20，临时 UI 100），禁止使用默认值。
+* **结论**: 必须在 SOP 中强制规定 `Priority` 步长（如：基础插件 10，玩法插件 20，临时 UI 100），禁止使用默认值。
 
----
 
-**Next Step**: 
-- [ ] **Inventory & Equipment 专题**：分析 Lyra 如何在不修改 InputConfig 的情况下，通过更换装备动态切换 `IMC` 与 `InputTag` 优先级。
