@@ -60,8 +60,6 @@ Lyra 舍弃了旧版的按键字符串绑定，采用 **Enhanced Input + Gamepla
 - [ ] 若有复用逻辑（如通用 Crosshair UI），创建 `ActionSet` 并在 `Experience` 中引用。
 - [ ] 将 `Experience` 填入 `UserFacingExperienceDefinition` 进行入口测试。
 
----
 
-**Next Step**: 
-- [ ] 深入 `Enhanced Input`：解析从 `InputConfig` 到 `HeroComponent` 的绑定流水线。
+
 
