@@ -51,6 +51,7 @@
 ---
 ## 4. 使用示例
 1. **消息结构体定义** (Data Load)
+
 消息总线不传“类”，只传“数据碎片”。这个结构体必须是 USTRUCT，以便 UE 的反射系统识别。
 ```
 // 定义在 C++ 核心层，作为通信协议
@@ -67,6 +68,7 @@ struct FInventoryChangeMessage
 };
 ```
 2. **绑定监听** (Listen/Subscribe)
+
 在 Lyra 中，监听通常发生在 BeginPlay 或初始化阶段。
 
 ```
@@ -95,6 +97,7 @@ void UMyWidget::OnInventoryChanged(FGameplayTag Channel, const FInventoryChangeM
 }
 ```
 3. **发送消息** (Broadcast/Publish)
+
 发送方完全不需要知道谁在听。
 
 ```
