@@ -5,7 +5,7 @@ namespace Gameplay.Effect
 {
     public class EffectInstance
     {
-        public readonly GameplayEffect Spec;
+        public readonly GameplayEffect Config;
         public readonly GameplayTag SourceTag;
         public int StackCount;
         //失效的时间
@@ -13,21 +13,21 @@ namespace Gameplay.Effect
         //下一次周期触发的时间
         public float NextPeriodTime;
         //是否失效了
-        public bool IsExpired => Spec.DurationType == DurationType.HasDuration &&
+        public bool IsExpired => Config.EffectDurationType == DurationType.HasDuration &&
             Time.time >= ExpireTime;
-        public bool ShouldTriggerPeriod => (Spec.DurationType == DurationType.Infinite
-            || Spec.DurationType == DurationType.HasDuration)
-            && Spec.Period > 0
+        public bool ShouldTriggerPeriod => (Config.EffectDurationType == DurationType.Infinite
+            || Config.EffectDurationType == DurationType.HasDuration)
+            && Config.Period > 0
             && Time.time >= NextPeriodTime;
         public EffectInstance(GameplayEffect spec,GameplayTag tag)
         {
-            Spec = spec;
+            Config = spec;
             SourceTag = tag;
             StackCount = 1;
             var now=Time.time;
-            ExpireTime=Spec.DurationType==DurationType.HasDuration?
-                now+Spec.Duration:float.MaxValue;
-            NextPeriodTime=Spec.Period>0?now+Spec.Period:float.MaxValue;
+            ExpireTime=Config.EffectDurationType==DurationType.HasDuration?
+                now+Config.Duration:float.MaxValue;
+            NextPeriodTime=Config.Period>0?now+Config.Period:float.MaxValue;
         }
     }
 }
